@@ -35,7 +35,8 @@ async def on_message(message):
         await message.channel.send(msg)
 
     if message.content.startswith('!Help'):
-        msg = "Commands \n '!Score' \n '!Rank' \n '!Servers' \n '!Calender'"
+        msg = "Commands \n '!Score' \n '!Rank' - Ranks in JOK\n '!Servers' - Servers online \n '!Calender' \n " \
+              "'!WC-Rank' - Club wc ranking \n '!WC' - Personal ranking wc"
         await message.channel.send(msg)
 
     # Get ranking-score with usernames
@@ -97,13 +98,10 @@ async def on_message(message):
 
     # Returns world cup club-ranking
     if message.content == '!WC-Rank':
-        URL = 'http://catchingfeatures.com/comps/series2.php?s=666'
-        page = requests.get(URL)
-        soup = BeautifulSoup(page.content, 'html.parser')
+        soup = pageReq('http://catchingfeatures.com/comps/series2.php?s=666')
 
         t = soup.find(text=re.compile(".*" + club + ".*"))
         t = t.findParent().findParent()
-        print(t)
         t = t.findAll('td')
         msg = t[0].text + "\n"
         st = 0
@@ -111,6 +109,18 @@ async def on_message(message):
             msg = msg + "Etapp " + str(i) + ": " + t[i].text + "\n"
         msg = msg + "Totalt: " + t[len(t) - 1].text + "\n"
 
+        await message.channel.send(msg)
+
+    # Returns world cup ranking
+    if message.content == '!WC':
+        soup = pageReq('http://www.catchingfeatures.com/comps/series.php?s=666')
+        msg = "plc.    Namn \n"
+        msg = msg + "-------------------- \n"
+        for i in range(len(names)):
+            t = soup.find(text=names[i])
+            t = t.findParent().findParent().findParent()
+            t = t.findAll('td')
+            msg = msg + t[0].text + "\n"
         await message.channel.send(msg)
 
 

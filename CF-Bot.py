@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import datetime
 import re
 
-TOKEN = 'xxxx'
+TOKEN = 'NzAwNjUwNzY5NDE3ODk1OTk2.XptjyQ.HFPcAg2_y-vua9km9fv5sV9YvHA'
 client = discord.Client()
 
 # Club and runners that will be searched after
@@ -60,6 +60,8 @@ async def on_message(message):
 
         msg = "Plc.  Namn    Poäng \n"
         for i in range(len(tList)):
+            print(tList[i])
+        for i in range(len(tList)):
             t = tList[i].findParent().findParent().findParent()
             t = t.findAll('td')
             try:
@@ -83,18 +85,6 @@ async def on_message(message):
             await message.channel.send(msg)
         except:
             await message.channel.send("No servers online :(")
-
-    # Shows calender activities for the next seven days from www.jarfallaok.se
-    if message.content == "!Calender":
-        dt = datetime.datetime.today()
-        soup = pageReq('https://www.jarfallaok.se/kalender/index.php#dt')
-        msg = ""
-        for i in range(15):
-            day = "d" + str(dt.day + i)
-            t = soup.find(id=day)
-            t = t.findAll('td')
-            msg = msg + (t[0].text + t[1].text + "\n")
-        await message.channel.send(msg)
 
     # Returns world cup club-ranking
     if message.content == '!WC-Rank':

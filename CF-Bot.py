@@ -8,7 +8,11 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-TOKEN = 'xxxx'
+# Gets discord token from text file Tokens.txt
+f = open('Tokens.txt')
+lines = f.readlines()
+TOKEN = lines[0]
+
 client = discord.Client()
 
 # Club and runners that will be searched after

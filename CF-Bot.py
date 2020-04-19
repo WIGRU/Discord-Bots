@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-TOKEN = 'NzAwNjUwNzY5NDE3ODk1OTk2.XptjyQ.HFPcAg2_y-vua9km9fv5sV9YvHA'
+TOKEN = 'xxxx'
 client = discord.Client()
 
 # Club and runners that will be searched after

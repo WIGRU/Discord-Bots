@@ -6,6 +6,7 @@ import discord
 import requests
 import json
 
+# Get token and api-keys
 f = open('Tokens.txt')
 lines = f.readlines()
 TOKEN = lines[3].strip()
@@ -14,7 +15,7 @@ apiKey2 = lines[5].strip()
 apiKey3 = lines[6].strip()
 client = discord.Client()
 
-
+# get departures for specific station with its id
 def avg(id):
     url = "http://api.sl.se/api2/realtimedeparturesv4.json?key=" + apiKey + "&siteid=" + id + "&timewindow=60"
     response = requests.get(url)
@@ -30,8 +31,9 @@ def avg(id):
             print("No departure")
     return msg
 
-def resa(id1, id2):
 
+# Get journey info between two stations with their ids
+def resa(id1, id2):
     url = 'https://api.sl.se/api2/TravelplannerV3_1/trip?key=' + apiKey3 + '&originExtId=' + id1 +'&destExtId=' + id2
     response = requests.get(url)
     data = response.text
@@ -57,7 +59,9 @@ async def on_message(message):
 
     if message.content.startswith('!Help-SL'):
         await message.channel.send(
-            "'!Odenplan' \n '!Barkarby' \n '!Jakobsberg' \n '!Kallhäll' \n '!Norrviken' \n '!Sollentuna' \n '!Rudbeck'")
+            "Avgångar: \n '!Odenplan' \n '!Barkarby' \n '!Jakobsberg' \n '!Kallhäll' \n '!Norrviken' \n '!Sollentuna' \n '!Rudbeck' \n"
+            "Info: \n '!Delay' \n"
+            "Resa: \n '!Bar-Rud' \n '!Bar-Ode'")
 
     if message.content.startswith('!Barkarby'):
         await message.channel.send(avg("9703"))
@@ -89,8 +93,8 @@ async def on_message(message):
     if message.content.startswith('!Kal-Ode'):
         await message.channel.send("Resa: Kallhäll-Odenplan \n" + resa("9701", "9117"))
 
+    # Delays for lines passing Stockholm Central Station
     if message.content.startswith("!Delay"):
-
         url = "http://api.sl.se/api2/deviations.json?key=" + apiKey2 + "&siteId=9117&transportMode=train"
         response = requests.get(url)
         data = response.text
